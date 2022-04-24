@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include<string.h>
 // comparator function for gsort
-double comparator(double a, double b)
-{
-	double arg1 = a;
-	double arg2 = b;
+double comparator(const void* a, const void* b){
+	double arg1 = *(double*)a;
+	double arg2 = *(double*)b;
+
 	if (arg1 > arg2)
 	{
+
 		return 0.1;
 	}
 	if (arg1 < arg2)
@@ -19,23 +20,32 @@ double comparator(double a, double b)
 
 // bubble sort implementation inspired from qsort()
 // this method accepts an array of type double, its size and callback comparator function
-void gsort(double *ptr, int size, double (*comp)(double, double))
+void gsort(void *ptr,size_t count, size_t size, double (*comp)(const void* , const void* ))
 {
-	for (int i = 0; i < size; i++)
+
+
+	for (int i = 0; i < count; i++)
 	{
-		for (int j = i + 1; j < size; j++)
+		for (int j = i + 1; j < count; j++)
 		{
-			double result = (*comp)(ptr[i], ptr[j]);
+			
+			double result = (*comp)(&ptr[i],&ptr[j]);
 			if (result == 0.1)
-			{
-				double temp = ptr[i];
-				ptr[i] = ptr[j];
-				ptr[j] = temp;
+			{				 	
+				swap(&ptr[i],&ptr[j],size);
 			}
 		}
 	}
 }
-
+void swap(void* a,void* b,size_t size){
+	printf("aa %f\n",*(double*)a);
+		printf("aa %f\n",*(double*)b);
+void* buffer=(void *)malloc(size);
+				memcpy(buffer,a,size);
+				memcpy(a,b,size);
+				memcpy(b,buffer,size);
+				free(buffer);
+}
 int main(int argc, char **argv)
 {
 	// check arguments count. if no more than 1 argument exit the program
@@ -55,7 +65,7 @@ int main(int argc, char **argv)
 	}
 
 	// qsort
-	gsort(numarray, size, comparator);
+	gsort(numarray,size, sizeof(double), comparator);
 	// print sorted arguments after sorting
 	for (int i = 0; i < size; i++)
 	{
