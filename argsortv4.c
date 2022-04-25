@@ -1,9 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<string.h>
-// comparator function for gsort
 double *numarray;
+//method to swap data
 void swap(void* a,void* b,size_t size);
+//method to print array after sorting
+void printArray(int size){
+			fprintf(stdout, "[ ");
+	for (int i = 0; i < size; i++)
+	{
+		fprintf(stdout, "%.2f ",numarray[i]);
+
+	}
+			fprintf(stdout, "]\n");
+}
+
+// comparator function for gsort
 double comparator(const void* a, const void* b){
 	double arg1 = *(double*)a;
 	double arg2 = *(double*)b;
@@ -19,11 +31,10 @@ double comparator(const void* a, const void* b){
 	return 0;
 }
 
-// bubble sort implementation inspired from qsort()
-// this method accepts an array of type double, its size and callback comparator function
+// this method accepts an array of type double, count of elements, its size and callback comparator function
 void gsort(void *ptr,size_t count, size_t size, double (*comp)(const void* , const void* ))
 {
-char *base=(char*)ptr;
+char *base=(char*)ptr; 
 char *p1=base;
 	for (int i = 0; i < count; i++)
 	{
@@ -42,11 +53,12 @@ char *p2=p1+size;
 	}
 }
 void swap(void* a,void* b,size_t size){
-void* buffer=(void *)malloc(size);
+	//swap values using memcpy
+void* buffer=(void *)malloc(size); //allocate temporary buffer
 				memcpy(buffer,a,size);
 				memcpy(a,b,size);
 				memcpy(b,buffer,size);
-				free(buffer);
+				free(buffer); //free buffer after swap
 				
 }
 
@@ -69,14 +81,9 @@ int main(int argc, char **argv)
 		numarray[i - 1] = atof(argv[i]);
 		//printf("numarray[%d]=%f\n",i-1,atof(argv[i]));
 	}
-	// qsort
+	// gsort
 	gsort(numarray,size, sizeof(double), comparator);
 	// print sorted arguments after sorting
-	for (int i = 0; i < size; i++)
-	{
-		fprintf(stdout, "%f \n",numarray[i]);
-
-	}
-			fprintf(stdout, "\n ");
+	printArray(size);
 	free(numarray); // delete allocated array
 }
