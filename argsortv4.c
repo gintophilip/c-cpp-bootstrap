@@ -27,22 +27,18 @@ char *base=(char*)ptr;
 char *p1=base;
 	for (int i = 0; i < count; i++)
 	{
-char *p2=p1+8;
+char *p2=p1+size;
 		for (int j = i + 1; j < count; j++)
 		{
-
-			
-			
-
 			double result = (*comp)((void *)p1,(void *)p2);
 			if (result == 2.0)
 			{		
 				swap(p1,p2,size);
 			}
-			p2+=8;
+			p2+=size;
 		}
 
-			p1+=8;	
+			p1+=size;	
 	}
 }
 void swap(void* a,void* b,size_t size){
